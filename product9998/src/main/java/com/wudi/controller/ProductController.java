@@ -1,10 +1,15 @@
 package com.wudi.controller;
 
 import com.netflix.loadbalancer.*;
+import com.wudi.model.BaseData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -24,6 +29,44 @@ public class ProductController {
 
         return "进入商品服务，展示商品";
     }
+
+    @GetMapping("/product/find/one")
+    public Map<String,Object> findOne(String productId){
+        log.info("参数打印:"+productId);
+        Map map = new HashMap();
+        map.put("A","A");
+        map.put("B","B");
+        return map;
+    }
+
+    @PostMapping("/product/find/one/post")
+    public Map<String,Object> findOnePost(String productId){
+        log.info("参数打印 post:"+productId);
+        Map map = new HashMap();
+        map.put("A","A");
+        map.put("B","B");
+        return map;
+    }
+
+    @PostMapping("/product/find/all/post")
+    public Map<String,Object> findAllPost(@RequestBody BaseData baseData){
+        log.info("参数打印 post:"+baseData);
+        Map map = new HashMap();
+        map.put("A","A");
+        map.put("B","B");
+        return map;
+    }
+
+
+    @GetMapping("/product/find/all")
+    public Map<String,Object> findAll(BaseData baseData){
+        log.info("参数打印:"+baseData);
+        Map map = new HashMap();
+        map.put("A","A");
+        map.put("B","B");
+        return map;
+    }
+
 
     public static void main(String[] args) {
      /*int number =   1%4;

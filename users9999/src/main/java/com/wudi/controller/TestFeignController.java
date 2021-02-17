@@ -24,35 +24,35 @@ public class TestFeignController {
     private ProductClient productClient;
 
     @GetMapping("/feign/open")
-    public void showMsg(){
-          log.info("进入测试feign调用方法");
+    public void showMsg() {
+        log.info("进入测试feign调用方法");
         String msg = productClient.showMsg();
-        log.info("调用商品服务返回信息:"+msg);
+        log.info("调用商品服务返回信息:" + msg);
     }
 
     @GetMapping("/feign/find/one")
-    public Map<String,Object> findOne(String productId){
+    public Map<String, Object> findOne(String productId) {
         Map<String, Object> clientOne = productClient.findOne(productId);
         return clientOne;
     }
 
     @GetMapping("/feign/find/all")
-    public Map<String,Object> findAll(BaseData baseData){
-        log.info("参数打印:"+baseData);
+    public Map<String, Object> findAll(BaseData baseData) {
+        log.info("参数打印:" + baseData);
 
         Map<String, Object> clientOne = productClient.findAll(baseData);
         return clientOne;
     }
 
     @GetMapping("/feign/find/one/post")
-    public Map<String,Object> findOnePost(String productId){
+    public Map<String, Object> findOnePost(String productId) {
         Map<String, Object> clientOne = productClient.findOnePost(productId);
         return clientOne;
     }
 
     @GetMapping("/feign/find/all/post")
-    public Map<String,Object> findAllPost(BaseData baseData){
-        log.info("参数打印:"+baseData);
+    public Map<String, Object> findAllPost(BaseData baseData) {
+        log.info("参数打印:" + baseData);
 
         Map<String, Object> clientOne = productClient.findAllPost(baseData);
         return clientOne;

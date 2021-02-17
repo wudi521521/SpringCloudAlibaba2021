@@ -1,0 +1,37 @@
+server:
+  port: 8989
+spring:
+  application:
+    name: gateway
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        service-name: ${spring.application.name}
+    gateway:
+      routes:
+        - id: user_route                   #指定路由唯一标识
+          #uri: http://localhost:9999/      #指定路由服务的地址
+          uri: lb://users                   #lb代表转发后台服务使用负载均衡,users代表服务注册中心的服务名
+          predicates:
+            - Path=/feign/**               #指定路由规则(路径中含有feign的url就转发到localhost:9999服务)
+        - id: product_route                   #指定路由唯一标识
+          uri: lb://products                #lb代表转发后台服务使用负载均衡,users代表服务注册中心的服务名
+          predicates:
+            - Path=/product/**               #指定路由规则(路径中含有feign的url就转发到localhost:9999服务)
+            #- After=2021-02-17T17:07:14.584+08:00[Asia/Shanghai]    #断言指定时间之后服务可用
+            #- Before=2021-02-17T17:07:14.584+08:00[Asia/Shanghai]   #断言指定时间之前服务可用
+            #- Between=2021-02-17T17:07:14.584+08:00[Asia/Shanghai],2021-02-17T17:07:14.584+08:00[Asia/Shanghai] #断言在指定的时间内服务可用
+            #- Cookie=username,chenyn         #断言指定Cookie内含有内容服务可用
+            #- Header=X-Request-Id, \d+       #基于请求头中的指定属性的正则匹配路由(这里全是整数)
+            #- Method=Get,Post                #基于指定的请求方式请求进行路由
+      discovery:
+        locator:
+          enabled: true                      #开启根据服务名动态获取路由{使用负载均衡时必须开启}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*" #开启所有web端点暴露{http://127.0.0.1:8989/actuator/gateway/routes}

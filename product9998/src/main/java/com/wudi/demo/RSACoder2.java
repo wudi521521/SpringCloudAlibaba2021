@@ -64,7 +64,7 @@ public class RSACoder2 {
      * 私钥加密
      *
      * @param data 待加密数据
-     * @param key       密钥
+     * @param key  密钥
      * @return byte[] 加密数据
      */
     public static byte[] encryptByPrivateKey(byte[] data, byte[] key) throws Exception {
@@ -84,7 +84,7 @@ public class RSACoder2 {
      * 公钥加密
      *
      * @param data 待加密数据
-     * @param key       密钥
+     * @param key  密钥
      * @return byte[] 加密数据
      */
     public static byte[] encryptByPublicKey(byte[] data, byte[] key) throws Exception {
@@ -181,8 +181,8 @@ public class RSACoder2 {
         byte[] privateKey = RSACoder2.getPrivateKey(keyMap);
         System.out.println("公钥：/n" + Base64.encodeBase64String(publicKey));
         System.out.println("私钥：/n" + Base64.encodeBase64String(privateKey));
-        System.out.println("公钥长度:"+Base64.encodeBase64String(publicKey).length());
-        System.out.println("私钥长度:"+Base64.encodeBase64String(privateKey).length());
+        System.out.println("公钥长度:" + Base64.encodeBase64String(publicKey).length());
+        System.out.println("私钥长度:" + Base64.encodeBase64String(privateKey).length());
 
         System.out.println("================密钥对构造完毕,甲方将公钥公布给乙方，开始进行加密数据的传输=============");
         String str = "RSA密码交换算法";

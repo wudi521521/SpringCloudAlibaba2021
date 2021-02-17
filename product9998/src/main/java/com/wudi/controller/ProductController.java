@@ -25,46 +25,46 @@ public class ProductController {
 
 
     @GetMapping("/product/show/msg")
-    public String showMsg(){
+    public String showMsg() {
         log.info("进入商品服务,展示商品----");
 
         return "进入商品服务，展示商品";
     }
 
     @GetMapping("/product/find/one")
-    public Map<String,Object> findOne(String productId){
-        log.info("参数打印:"+productId);
+    public Map<String, Object> findOne(String productId) {
+        log.info("参数打印:" + productId);
         Map map = new HashMap();
-        map.put("A","A");
-        map.put("B","B");
+        map.put("A", "A");
+        map.put("B", "B");
         return map;
     }
 
     @PostMapping("/product/find/one/post")
-    public Map<String,Object> findOnePost(String productId){
-        log.info("参数打印 post:"+productId);
+    public Map<String, Object> findOnePost(String productId) {
+        log.info("参数打印 post:" + productId);
         Map map = new HashMap();
-        map.put("A","A");
-        map.put("B","B");
+        map.put("A", "A");
+        map.put("B", "B");
         return map;
     }
 
     @PostMapping("/product/find/all/post")
-    public Map<String,Object> findAllPost(@RequestBody BaseData baseData){
-        log.info("参数打印 post:"+baseData);
+    public Map<String, Object> findAllPost(@RequestBody BaseData baseData) {
+        log.info("参数打印 post:" + baseData);
         Map map = new HashMap();
-        map.put("A","A");
-        map.put("B","B");
+        map.put("A", "A");
+        map.put("B", "B");
         return map;
     }
 
 
     @GetMapping("/product/find/all")
-    public Map<String,Object> findAll(BaseData baseData){
-        log.info("参数打印:"+baseData);
+    public Map<String, Object> findAll(BaseData baseData) {
+        log.info("参数打印:" + baseData);
         Map map = new HashMap();
-        map.put("A","A");
-        map.put("B","B");
+        map.put("A", "A");
+        map.put("B", "B");
         return map;
     }
 
@@ -72,47 +72,49 @@ public class ProductController {
     public static void main(String[] args) {
      /*int number =   1%4;
         System.out.println("==:"+number);*/
-     //测试AtomicInteger
-         nextServerCyclicCounter = new AtomicInteger(0);
+        //测试AtomicInteger
+        nextServerCyclicCounter = new AtomicInteger(0);
         //期望值是1更改值是2
         int i = incrementAndGetModulo(4);
         System.out.println(i);
     }
+
     private static int incrementAndGetModulo(int modulo) {
         int current;
         int next;
         do {
             current = nextServerCyclicCounter.get();
-            System.out.println("===="+current);
+            System.out.println("====" + current);
             next = (current + 1) % modulo;
-        } while(!nextServerCyclicCounter.compareAndSet(current, next));
+        } while (!nextServerCyclicCounter.compareAndSet(current, next));
 
         return next;
     }
 
     /**
      * 测试服务熔断
+     *
      * @param id
      * @return
      */
     @GetMapping("/product/break")
     //@HystrixCommand(fallbackMethod = "testBreakFall") //指定服务熔断
     @HystrixCommand(defaultFallback = "testDefaultFall") //默认服务熔断
-     public String testBreaker(int id){
+    public String testBreaker(int id) {
         log.info("**************");
-        if (id<0){
+        if (id < 0) {
             throw new RuntimeException("数据不合法Exception");
         }
-        return "商品id:"+id;
-     }
+        return "商品id:" + id;
+    }
 
-     //触发熔断的fallback方法
-     public String testBreakFall(int id){
-        return "当前数据不合法:"+id;
-     }
+    //触发熔断的fallback方法
+    public String testBreakFall(int id) {
+        return "当前数据不合法:" + id;
+    }
 
-     public String testDefaultFall(){
+    public String testDefaultFall() {
         return "默认熔断服务";
-     }
+    }
 
 }

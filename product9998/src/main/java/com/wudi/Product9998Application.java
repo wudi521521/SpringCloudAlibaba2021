@@ -18,7 +18,7 @@ public class Product9998Application {
     }
 
     @Bean
-    public ServletRegistrationBean getServlet(){
+    public ServletRegistrationBean getServlet() {
         HystrixMetricsStreamServlet servlet = new HystrixMetricsStreamServlet();
         ServletRegistrationBean registrationBean = new ServletRegistrationBean(servlet);
         registrationBean.setLoadOnStartup(1);

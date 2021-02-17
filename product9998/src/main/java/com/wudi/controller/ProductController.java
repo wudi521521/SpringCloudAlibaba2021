@@ -1,5 +1,6 @@
 package com.wudi.controller;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.loadbalancer.*;
 import com.wudi.model.BaseData;
 import lombok.extern.slf4j.Slf4j;
@@ -88,4 +89,30 @@ public class ProductController {
 
         return next;
     }
+
+    /**
+     * 测试服务熔断
+     * @param id
+     * @return
+     */
+    @GetMapping("/product/break")
+    //@HystrixCommand(fallbackMethod = "testBreakFall") //指定服务熔断
+    @HystrixCommand(defaultFallback = "testDefaultFall") //默认服务熔断
+     public String testBreaker(int id){
+        log.info("**************");
+        if (id<0){
+            throw new RuntimeException("数据不合法Exception");
+        }
+        return "商品id:"+id;
+     }
+
+     //触发熔断的fallback方法
+     public String testBreakFall(int id){
+        return "当前数据不合法:"+id;
+     }
+
+     public String testDefaultFall(){
+        return "默认熔断服务";
+     }
+
 }

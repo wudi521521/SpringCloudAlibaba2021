@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.wudi</groupId>
-    <artifactId>product9998</artifactId>
+    <artifactId>user9999</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>user9999</name>
     <description>Demo project for Spring Boot</description>
@@ -48,6 +48,11 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <!--Hystrix依赖-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
         </dependency>
     </dependencies>
     <!--import spring cloud element all area-->

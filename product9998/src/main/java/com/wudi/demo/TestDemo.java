@@ -1,7 +1,7 @@
-package com.rsa;
+package com.wudi.demo;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang.ArrayUtils;
+import org.json.JSONObject;
 
 import javax.crypto.Cipher;
 import java.security.*;
@@ -9,18 +9,22 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-
 /**
- * 非对称加密算法RSA算法组件
- * 非对称算法一般是用来传送对称加密算法的密钥来使用的，相对于DH算法，RSA算法只需要一方构造密钥，不需要
- * 大费周章的构造各自本地的密钥对了。DH算法只能算法非对称算法的底层实现。而RSA算法算法实现起来较为简单
- *
- * @author kongqz
- */
-public class RSACoder2 {
+ * @author Dillon Wu
+ * @Description:/**
+ *  * 非对称加密算法RSA算法组件
+ *  * 非对称算法一般是用来传送对称加密算法的密钥来使用的，相对于DH算法，RSA算法只需要一方构造密钥，不需要
+ *  * 大费周章的构造各自本地的密钥对了。DH算法只能算法非对称算法的底层实现。而RSA算法算法实现起来较为简单
+ *  *
+ *  * @author kongqz
+ *  */
+
+public class TestDemo {
     //非对称密钥算法
     public static final String KEY_ALGORITHM = "RSA";
 
@@ -101,14 +105,7 @@ public class RSACoder2 {
         //数据加密
         Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
         cipher.init(Cipher.ENCRYPT_MODE, pubKey);
-        // 加密时超过117字节就报错。为此采用分段加密的办法来加密
-        byte[] enBytes = null;
-        for (int i = 0; i < data.length; i += 32) {
-// 注意要使用2的倍数，否则会出现加密后的内容再解密时为乱码
-            byte[] doFinal = cipher.doFinal(ArrayUtils.subarray(data, i, i + 32));
-            enBytes = ArrayUtils.addAll(enBytes, doFinal);
-        }
-        return enBytes;
+        return cipher.doFinal(data);
     }
 
     /**
@@ -127,14 +124,7 @@ public class RSACoder2 {
         //数据解密
         Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
         cipher.init(Cipher.DECRYPT_MODE, privateKey);
-        // 加密时超过117字节就报错。为此采用分段加密的办法来加密
-        byte[] enBytes = null;
-        for (int i = 0; i < data.length; i += 64) {
-// 注意要使用2的倍数，否则会出现加密后的内容再解密时为乱码
-            byte[] doFinal = cipher.doFinal(ArrayUtils.subarray(data, i,i + 64));
-            enBytes = ArrayUtils.addAll(enBytes, doFinal);
-        }
-        return enBytes;
+        return cipher.doFinal(data);
     }
 
     /**
@@ -188,46 +178,41 @@ public class RSACoder2 {
     public static void main(String[] args) throws Exception {
         //初始化密钥
         //生成密钥对
-        Map<String, Object> keyMap = RSACoder2.initKey();
+        Map<String, Object> keyMap = com.rsa.RSACoder2.initKey();
         //公钥
-        byte[] publicKey = RSACoder2.getPublicKey(keyMap);
+        byte[] publicKey = com.rsa.RSACoder2.getPublicKey(keyMap);
 
         //私钥
-        byte[] privateKey = RSACoder2.getPrivateKey(keyMap);
+        byte[] privateKey = com.rsa.RSACoder2.getPrivateKey(keyMap);
         System.out.println("公钥：/n" + Base64.encodeBase64String(publicKey));
         System.out.println("私钥：/n" + Base64.encodeBase64String(privateKey));
-        System.out.println("公钥长度:" + Base64.encodeBase64String(publicKey).length());
-        System.out.println("私钥长度:" + Base64.encodeBase64String(privateKey).length());
+        Base64.decodeBase64(Base64.encodeBase64String(publicKey));
 
-        System.out.println("================密钥对构造完毕,甲方将公钥公布给乙方，开始进行加密数据的传输=============");
-        String str = "RSA密码交换算法";
-        System.out.println("/n===========甲方向乙方发送加密数据==============");
-        System.out.println("原文:" + str);
-        //甲方进行数据的加密
-        byte[] code1 = RSACoder2.encryptByPrivateKey(str.getBytes(), privateKey);
-        System.out.println("加密后的数据：" + Base64.encodeBase64String(code1));
-        System.out.println("===========乙方使用甲方提供的公钥对数据进行解密==============");
-        //乙方进行数据的解密
-        byte[] decode1 = RSACoder2.decryptByPublicKey(code1, publicKey);
-        System.out.println("乙方解密后的数据：" + new String(decode1) + "/n/n");
-
-        System.out.println("===========反向进行操作，乙方向甲方发送数据==============/n/n");
-
-        str = "乙方向甲方发送数据RSA算法";
-
-        System.out.println("原文:" + str);
-
+        TClass tClass = new TClass();
+        tClass.setClassId(1);
+        tClass.setCourseId(1);
+        tClass.setCourseName("那么");
+        List list = new ArrayList();
+        list.add(1);
+        list.add(2);
+        tClass.setListClass(list);
+        tClass.setPictureUrl("--------------");
+        tClass.setState(1);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put(TClass.class.getSimpleName(),tClass);
         //乙方使用公钥对数据进行加密
-        byte[] code2 = RSACoder2.encryptByPublicKey(str.getBytes(), publicKey);
+        byte[] code2 = com.rsa.RSACoder2.encryptByPublicKey(jsonObject.toString().getBytes(), Base64.decodeBase64(Base64.encodeBase64String(publicKey)));
         System.out.println("===========乙方使用公钥对数据进行加密==============");
+        System.out.println("加密后的数据+长度"+code2.length);
         System.out.println("加密后的数据：" + Base64.encodeBase64String(code2));
 
         System.out.println("=============乙方将数据传送给甲方======================");
         System.out.println("===========甲方使用私钥对数据进行解密==============");
 
         //甲方使用私钥对数据进行解密
-        byte[] decode2 = RSACoder2.decryptByPrivateKey(code2, privateKey);
+        byte[] decode2 = com.rsa.RSACoder2.decryptByPrivateKey(Base64.decodeBase64(Base64.encodeBase64String(code2)), Base64.decodeBase64(Base64.encodeBase64String(privateKey)));
 
         System.out.println("甲方解密后的数据：" + new String(decode2));
     }
+
 }
